@@ -1,0 +1,18 @@
+Code book
+R-Version used: R i386 3.2.3
+Required packages: none
+subsequent data preparation: Data as given by link used.
+variable name and labels: as described by files in the zip.
+
+all variables are numeric just the movement variable are strings.
+Missing data is labeled with NA.
+Code, Code -Book, README written on the 31.1.2016
+
+Performed steps in the code
+#1 downlaoded the data
+#2 merge sets
+#3 renamed columns
+#4 calcutlated means
+#5 make new tidy data set
+
+Step 5 did obviously not work as expected. First 4 tasks finished.
