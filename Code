@@ -1,0 +1,58 @@
+#1#load data from desktop
+traindata<-read.table("X_train.txt")
+testdata<-read.table("X_test.txt")
+testlabel<-read.table("y_test.txt")
+trainlabel<-read.table("y_train.txt")
+subject_train<-read.table("subject_train.txt")
+subject_test<-read.table("subject_test.txt")
+link<-read.table("activity_labels.txt")
+features<-read.table("features.txt")
+
+#name columns
+colnames(traindata)<-features[,2]
+colnames(testdata)<-features[,2]
+colnames(link)<-c("activid","movement")
+colnames(testlabel)="activid"
+colnames(trainlabel)="activid"
+
+#complete test and train dataset by merging label and subject to it
+testdata[,"activid"]<-testlabel
+testdata[,"subject"]<-subject_test
+traindata[,"activid"]<-trainlabel
+traindata[,"subject"]<-subject_train
+
+
+#merge the train and test dataset
+alldata<-rbind(testdata,traindata)
+col<-colnames(alldata)
+
+#2#just get mean and standdev
+sort<-c(grepl("mean",col)|grepl("std",col)|grepl("activid",col)|grepl("subject",col))
+meanandstd<-alldata[sort==TRUE]
+col2<-colnames(meanandstd)
+sort2<-grepl("meanFreq",col2)
+meanandstd2<-meanandstd[sort2==FALSE]
+
+#3#label activity
+labeleddata= merge(meanandstd2,link,by='activid',all.x=TRUE)
+
+
+
+#4# already descriptive. Without additional information i can not give more adequate labels.
+
+
+#5# creat second data set
+final  = labeleddata[,names(labeleddata) != 'link']
+final2= aggregate(final[,names(final) != c('activid','subject')],by=list(activid=final$activid,subject = final$subject),mean)
+final3<-merge(final2,link,by='activid',all.x=TRUE)
+write.table(final3, './tidy data set.txt',row.names=TRUE)
+
+
+
+
+
+
+
+
+
+       
